@@ -9,9 +9,13 @@
 /* Begin PBXBuildFile section */
 		0C80B921A6F3F58F76C31292 /* libPods-DriveQuiz.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DCACB8F33CDC322A6C60F78 /* libPods-DriveQuiz.a */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
+		2BBE2AA146B0C8EC00BEB315 /* overlap.wav in Resources */ = {isa = PBXBuildFile; fileRef = 6A1836DB34B743086E8F55D2 /* overlap.wav */; };
+		587A6857653960B7F2488255 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 24FD0AEF6AA454154AFDA97D /* AVFoundation.framework */; };
 		5ED77F775EEFA09C8F3C98BC /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */; };
+		6C5064D20E562C85AF2F5036 /* wrong.wav in Resources */ = {isa = PBXBuildFile; fileRef = F974F251571B9D5043130762 /* wrong.wav */; };
 		761780ED2CA45674006654EE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761780EC2CA45674006654EE /* AppDelegate.swift */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		B5D4B82953F8130B1D2F8901 /* correct.wav in Resources */ = {isa = PBXBuildFile; fileRef = 5795D6A0DA2606C30F97BEE7 /* correct.wav */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -19,12 +23,16 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = DriveQuiz/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = DriveQuiz/Info.plist; sourceTree = "<group>"; };
 		13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PrivacyInfo.xcprivacy; path = DriveQuiz/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		24FD0AEF6AA454154AFDA97D /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.0.sdk/System/Library/Frameworks/AVFoundation.framework; sourceTree = DEVELOPER_DIR; };
 		3B4392A12AC88292D35C810B /* Pods-DriveQuiz.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DriveQuiz.debug.xcconfig"; path = "Target Support Files/Pods-DriveQuiz/Pods-DriveQuiz.debug.xcconfig"; sourceTree = "<group>"; };
 		5709B34CF0A7D63546082F79 /* Pods-DriveQuiz.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DriveQuiz.release.xcconfig"; path = "Target Support Files/Pods-DriveQuiz/Pods-DriveQuiz.release.xcconfig"; sourceTree = "<group>"; };
+		5795D6A0DA2606C30F97BEE7 /* correct.wav */ = {isa = PBXFileReference; includeInIndex = 1; path = correct.wav; sourceTree = "<group>"; };
 		5DCACB8F33CDC322A6C60F78 /* libPods-DriveQuiz.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-DriveQuiz.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		6A1836DB34B743086E8F55D2 /* overlap.wav */ = {isa = PBXFileReference; includeInIndex = 1; path = overlap.wav; sourceTree = "<group>"; };
 		761780EC2CA45674006654EE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = DriveQuiz/AppDelegate.swift; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = DriveQuiz/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		F974F251571B9D5043130762 /* wrong.wav */ = {isa = PBXFileReference; includeInIndex = 1; path = wrong.wav; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -33,6 +41,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0C80B921A6F3F58F76C31292 /* libPods-DriveQuiz.a in Frameworks */,
+				587A6857653960B7F2488255 /* AVFoundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -47,6 +56,7 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */,
+				FA892539EDF6F7152324D486 /* sounds */,
 			);
 			name = DriveQuiz;
 			sourceTree = "<group>";
@@ -56,8 +66,17 @@
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				5DCACB8F33CDC322A6C60F78 /* libPods-DriveQuiz.a */,
+				7CAEC9D9DE8CAAC1E713941D /* iOS */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		7CAEC9D9DE8CAAC1E713941D /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				24FD0AEF6AA454154AFDA97D /* AVFoundation.framework */,
+			);
+			name = iOS;
 			sourceTree = "<group>";
 		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
@@ -96,6 +115,17 @@
 				5709B34CF0A7D63546082F79 /* Pods-DriveQuiz.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		FA892539EDF6F7152324D486 /* sounds */ = {
+			isa = PBXGroup;
+			children = (
+				5795D6A0DA2606C30F97BEE7 /* correct.wav */,
+				F974F251571B9D5043130762 /* wrong.wav */,
+				6A1836DB34B743086E8F55D2 /* overlap.wav */,
+			);
+			name = sounds;
+			path = DriveQuiz/sounds;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -161,6 +191,9 @@
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				5ED77F775EEFA09C8F3C98BC /* PrivacyInfo.xcprivacy in Resources */,
+				B5D4B82953F8130B1D2F8901 /* correct.wav in Resources */,
+				6C5064D20E562C85AF2F5036 /* wrong.wav in Resources */,
+				2BBE2AA146B0C8EC00BEB315 /* overlap.wav in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -191,13 +224,9 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-DriveQuiz/Pods-DriveQuiz-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			inputPaths = (
-			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-DriveQuiz/Pods-DriveQuiz-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -234,13 +263,9 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-DriveQuiz/Pods-DriveQuiz-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			inputPaths = (
-			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-DriveQuiz/Pods-DriveQuiz-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;

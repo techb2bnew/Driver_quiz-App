@@ -8,6 +8,7 @@ import ResultScreen from '../screens/ResultScreen';
 import SplashScreen from '../screens/SplashScreen';
 import { BaseStyle } from '../constant/Style';
 import { SCREENS } from '../constant/Constants';
+import { preloadSounds } from '../utils/sound';
 import { gameBgColor } from '../constant/Color';
 
 // Five screens and a linear flow, so a tiny state machine does the job
@@ -16,6 +17,10 @@ const AppNavigator = () => {
   const [route, setRoute] = useState({ name: SCREENS.SPLASH, params: {} });
 
   const navigate = useCallback((name, params = {}) => setRoute({ name, params }), []);
+
+  useEffect(() => {
+    preloadSounds();
+  }, []);
 
   useEffect(() => {
     const sub = BackHandler.addEventListener('hardwareBackPress', () => {

@@ -14,7 +14,14 @@ import {
   gameLoseColor,
   authBorderColor,
 } from '../../constant/Color';
+import { playSound, SOUNDS } from '../../utils/sound';
 import { widthPercentageToDP as wp } from '../../utils';
+
+const SOUND_FOR = {
+  correct: SOUNDS.CORRECT,
+  wrong: SOUNDS.WRONG,
+  overlap: SOUNDS.OVERLAP,
+};
 
 // type: 'correct' | 'wrong' | 'overlap'. For 'correct', `isLast` swaps Next for See Result.
 const ResultModal = ({ visible, type, points, isLast, onPress }) => {
@@ -27,6 +34,7 @@ const ResultModal = ({ visible, type, points, isLast, onPress }) => {
     if (!visible) {
       return;
     }
+    playSound(SOUND_FOR[type]);
     backdrop.setValue(0);
     pop.setValue(0);
     icon.setValue(0);
@@ -41,7 +49,7 @@ const ResultModal = ({ visible, type, points, isLast, onPress }) => {
           : Animated.timing(icon, { toValue: 1, duration: 450, useNativeDriver: true }),
       ]),
     ]).start();
-  }, [visible, isCorrect, backdrop, pop, icon]);
+  }, [visible, type, isCorrect, backdrop, pop, icon]);
 
   const iconStyle = isCorrect
     ? { transform: [{ scale: icon.interpolate({ inputRange: [0, 1], outputRange: [0.4, 1] }) }] }
