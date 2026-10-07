@@ -182,3 +182,13 @@ export const gameTileEdgeColor = dutyOnDutyColor;
 export const gameWinEdgeColor = dutyDrivingColor;
 export const gameLoseEdgeColor = dangerColor;
 export const gameProgressTrackColor = 'rgba(255,255,255,0.12)';
+
+// ---------------------------------------------------------------------------
+// Path game
+// ---------------------------------------------------------------------------
+// The circles on the board, in the three column colours of a playground
+// "Twister" mat. `dark` marks a fill light enough to need dark text.
+export const circleRedColor = '#E5484D';
+export const circleBlueColor = '#3E7BFA';
+export const circleYellowColor = '#F5C542';
+export const circleOutlineColor = '#F7F4EC';

@@ -3,10 +3,11 @@ import { StatusBar, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import AppButton from '../components/AppButton';
 import FadeView from '../components/FadeView';
-import useBestScore from '../hooks/useBestScore';
+import useProgress from '../hooks/useProgress';
 import { BaseStyle } from '../constant/Style';
 import { SCREENS, STRINGS } from '../constant/Constants';
-import { QUESTIONS } from '../constant/Questions';
+import { LEVELS } from '../constant/Questions';
+import { completedLevels, totalBest } from '../utils/levels';
 import { spacings } from '../constant/Fonts';
 import { fontSize, fontWeight, iconSize } from '../utils/typography';
 import {
@@ -28,16 +29,19 @@ const StatCard = ({ label, value }) => (
 );
 
 const HomeScreen = ({ navigate }) => {
-  const { bestScore } = useBestScore();
+  const { progress } = useProgress();
 
   return (
     <SafeAreaView style={[BaseStyle.flex, styles.container]}>
       <StatusBar barStyle="light-content" backgroundColor={gameBgColor} />
       <View style={BaseStyle.flex}>
         <FadeView delay={80} style={[BaseStyle.flexDirectionRow, styles.stats]}>
-          <StatCard label={STRINGS.HOME.BEST_SCORE} value={bestScore} />
+          <StatCard label={STRINGS.HOME.BEST_SCORE} value={totalBest(progress.best)} />
           <View style={{ width: spacings.large }} />
-          <StatCard label={STRINGS.HOME.QUESTIONS} value={QUESTIONS.length} />
+          <StatCard
+            label={STRINGS.HOME.LEVELS}
+            value={`${completedLevels(LEVELS, progress.done)}/${LEVELS.length}`}
+          />
         </FadeView>
 
         <FadeView delay={180} style={BaseStyle.alignItemsCenter}>
@@ -63,11 +67,7 @@ const HomeScreen = ({ navigate }) => {
       </View>
 
       <FadeView delay={450}>
-        <AppButton
-          title={STRINGS.HOME.START_QUIZ}
-          pulse
-          onPress={() => navigate(SCREENS.QUIZ, { runId: Date.now() })}
-        />
+        <AppButton title={STRINGS.HOME.PLAY} pulse onPress={() => navigate(SCREENS.LEVELS)} />
       </FadeView>
     </SafeAreaView>
   );

@@ -22,9 +22,11 @@ const SLIDE_WIDTH = wp(100);
 
 const Dot = ({ index, scrollX }) => {
   const input = [(index - 1) * SLIDE_WIDTH, index * SLIDE_WIDTH, (index + 1) * SLIDE_WIDTH];
-  const width = scrollX.interpolate({
+  // scaleX, not width: the scroll position drives this natively, and a native
+  // animation can't change a layout property like width.
+  const scaleX = scrollX.interpolate({
     inputRange: input,
-    outputRange: [wp(2.5), wp(7), wp(2.5)],
+    outputRange: [1, 2.8, 1],
     extrapolate: 'clamp',
   });
   const opacity = scrollX.interpolate({
@@ -32,7 +34,7 @@ const Dot = ({ index, scrollX }) => {
     outputRange: [0.4, 1, 0.4],
     extrapolate: 'clamp',
   });
-  return <Animated.View style={[styles.dot, { width, opacity }]} />;
+  return <Animated.View style={[styles.dot, { opacity, transform: [{ scaleX }] }]} />;
 };
 
 const Slide = ({ item, index, scrollX }) => {

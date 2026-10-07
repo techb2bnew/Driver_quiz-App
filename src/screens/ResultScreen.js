@@ -1,12 +1,14 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Animated, StatusBar, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import AppButton from '../components/AppButton';
 import FadeView from '../components/FadeView';
-import useBestScore from '../hooks/useBestScore';
+import useProgress from '../hooks/useProgress';
 import { BaseStyle } from '../constant/Style';
-import { SCORE, SCREENS, STRINGS } from '../constant/Constants';
-import { QUESTIONS } from '../constant/Questions';
+import { SCREENS, STRINGS } from '../constant/Constants';
+import { LEVELS } from '../constant/Questions';
+import { isLevelUnlocked, levelMaxScore } from '../utils/levels';
+import { resetLevel } from '../utils/progress';
 import { spacings } from '../constant/Fonts';
 import { fontSize, fontWeight, iconSize } from '../utils/typography';
 import {
@@ -20,25 +22,28 @@ import {
 } from '../constant/Color';
 import { widthPercentageToDP as wp } from '../utils';
 
-const MAX_SCORE = QUESTIONS.length * SCORE.POINTS_PER_QUESTION;
-
-const ResultScreen = ({ navigate, score }) => {
-  const { bestScore, saveIfBest } = useBestScore();
-  const [isNewBest, setIsNewBest] = useState(false);
+const ResultScreen = ({ navigate, levelId, score, isNewBest }) => {
+  const { progress } = useProgress();
+  const levelIndex = LEVELS.findIndex((l) => l.id === levelId);
+  const level = LEVELS[levelIndex];
+  const nextLevel = LEVELS[levelIndex + 1];
+  const maxScore = levelMaxScore(level);
+  const best = progress.best[levelId] || score;
   const pop = useRef(new Animated.Value(0)).current;
   const badge = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    saveIfBest(score).then((beat) => {
-      setIsNewBest(beat);
-      if (beat) {
-        Animated.spring(badge, { toValue: 1, friction: 4, useNativeDriver: true }).start();
-      }
-    });
     Animated.spring(pop, { toValue: 1, friction: 5, tension: 80, useNativeDriver: true }).start();
-  }, [score, saveIfBest, pop, badge]);
+    if (isNewBest) {
+      Animated.spring(badge, { toValue: 1, friction: 4, useNativeDriver: true }).start();
+    }
+  }, [isNewBest, pop, badge]);
 
-  const ratio = score / MAX_SCORE;
+  const play = (target, done, hintUsed) =>
+    navigate(SCREENS.QUIZ, { runId: Date.now(), levelId: target.id, done, hintUsed });
+  const canPlayNext = !!nextLevel && isLevelUnlocked(LEVELS, levelIndex + 1, progress.done);
+
+  const ratio = score / maxScore;
   const message =
     ratio >= 0.8
       ? STRINGS.RESULT.MESSAGES.GREAT
@@ -50,7 +55,7 @@ const ResultScreen = ({ navigate, score }) => {
     <SafeAreaView style={[BaseStyle.flex, styles.container]}>
       <StatusBar barStyle="light-content" backgroundColor={gameBgColor} />
       <View style={[BaseStyle.flex, BaseStyle.alignJustifyCenter]}>
-        <Text style={styles.title}>{STRINGS.RESULT.TITLE}</Text>
+        <Text style={styles.title}>{STRINGS.RESULT.TITLE(levelId)}</Text>
 
         <Animated.View
           style={[
@@ -60,7 +65,7 @@ const ResultScreen = ({ navigate, score }) => {
           ]}>
           <Text style={styles.scoreLabel}>{STRINGS.RESULT.YOUR_SCORE}</Text>
           <Text style={styles.score}>{score}</Text>
-          <Text style={styles.scoreMax}>/ {MAX_SCORE}</Text>
+          <Text style={styles.scoreMax}>/ {maxScore}</Text>
         </Animated.View>
 
         <Animated.View
@@ -75,20 +80,32 @@ const ResultScreen = ({ navigate, score }) => {
         <FadeView delay={400} style={[styles.messageCard, BaseStyle.alignItemsCenter]}>
           <Text style={styles.message}>{message}</Text>
           <Text style={styles.best}>
-            {STRINGS.RESULT.BEST_SCORE}: <Text style={styles.bestValue}>{isNewBest ? score : bestScore}</Text>
+            {STRINGS.RESULT.BEST_SCORE}: <Text style={styles.bestValue}>{best}</Text>
           </Text>
         </FadeView>
       </View>
 
       <FadeView delay={600}>
+        {canPlayNext && (
+          <AppButton
+            title={STRINGS.RESULT.NEXT_LEVEL}
+            pulse
+            onPress={() => play(nextLevel, progress.done, !!progress.hints[nextLevel.id])}
+          />
+        )}
         <AppButton
-          title={STRINGS.RESULT.PLAY_AGAIN}
-          onPress={() => navigate(SCREENS.QUIZ, { runId: Date.now() })}
+          title={STRINGS.RESULT.REPLAY}
+          variant="secondary"
+          onPress={async () => {
+            await resetLevel(level);
+            play(level, {}, false);
+          }}
+          style={canPlayNext ? styles.homeButton : undefined}
         />
         <AppButton
-          title={STRINGS.RESULT.HOME}
+          title={STRINGS.RESULT.ALL_LEVELS}
           variant="secondary"
-          onPress={() => navigate(SCREENS.HOME)}
+          onPress={() => navigate(SCREENS.LEVELS)}
           style={styles.homeButton}
         />
       </FadeView>
@@ -165,7 +182,7 @@ const styles = StyleSheet.create({
     fontWeight: fontWeight('fontWeightMedium1x'),
   },
   homeButton: {
-    marginTop: spacings.small,
+    marginTop: spacings.large,
   },
 });
 

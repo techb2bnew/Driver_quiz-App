@@ -29,3 +29,21 @@ export const segmentHitsRect = (p1, p2, r) => {
     segmentsCross(p1, p2, bl, tl)
   );
 };
+
+const onSegment = (a, p, b) =>
+  p.x >= Math.min(a.x, b.x) && p.x <= Math.max(a.x, b.x) && p.y >= Math.min(a.y, b.y) && p.y <= Math.max(a.y, b.y);
+
+// Like segmentsCross, but a line that only touches the other one (an end point lying on
+// it, or running along it) counts too. Used for a hand-drawn line, which must not meet
+// another line at all.
+export const segmentsIntersect = (p1, p2, p3, p4) => {
+  if (segmentsCross(p1, p2, p3, p4)) {
+    return true;
+  }
+  return (
+    (orient(p3, p4, p1) === 0 && onSegment(p3, p1, p4)) ||
+    (orient(p3, p4, p2) === 0 && onSegment(p3, p2, p4)) ||
+    (orient(p1, p2, p3) === 0 && onSegment(p1, p3, p2)) ||
+    (orient(p1, p2, p4) === 0 && onSegment(p1, p4, p2))
+  );
+};

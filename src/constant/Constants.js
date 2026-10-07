@@ -2,6 +2,7 @@ export const SCREENS = {
   SPLASH: 'Splash',
   ONBOARDING: 'Onboarding',
   HOME: 'Home',
+  LEVELS: 'Levels',
   QUIZ: 'Quiz',
   RESULT: 'Result',
 };
@@ -9,6 +10,7 @@ export const SCREENS = {
 export const STORAGE_KEYS = {
   ONBOARDING_DONE: '@drivequiz/onboardingDone',
   BEST_SCORE: '@drivequiz/bestScore',
+  PROGRESS: '@drivequiz/progress',
 };
 
 export const SCORE = {
@@ -16,6 +18,8 @@ export const SCORE = {
   // Every wrong attempt on a question takes this much off the next try.
   PENALTY_PER_RETRY: 2,
   MIN_POINTS: 2,
+  // A level gives one hint; using it costs this much of that question's points.
+  HINT_COST: 3,
 };
 
 export const TIMING = {
@@ -27,7 +31,7 @@ export const TIMING = {
 // Every piece of visible text lives here.
 export const STRINGS = {
   APP_NAME: 'DriveQuiz',
-  TAGLINE: 'Learn your truck. Drive with confidence.',
+  TAGLINE: 'Learn the dispatch flow. Drive with confidence.',
 
   ONBOARDING: {
     SKIP: 'Skip',
@@ -37,72 +41,94 @@ export const STRINGS = {
       {
         id: '1',
         icon: '🚛',
-        title: 'Know Your Truck',
+        title: 'Learn the Dispatch Flow',
         description:
-          'Learn the parts, dashboard signs and road rules every driver must know.',
+          'See who hands what to whom, and which document goes where: Shipper, Broker, Dispatcher, Driver and Receiver.',
       },
       {
         id: '2',
-        icon: '🔗',
-        title: 'Connect the Flow',
+        icon: '✍️',
+        title: 'Draw the Path',
         description:
-          'Draw lines from one box to the next to build the dispatch flow in the right order.',
+          'Read the question, then draw with your finger through the circles in the right order, starting with the first. Draw the whole route in one go. Some circles are extra.',
       },
       {
         id: '3',
-        icon: '🏆',
-        title: 'Beat Your Best',
+        icon: '⚠️',
+        title: 'Keep Lines Clean',
         description:
-          'Score points on every question and try to beat your best score.',
+          'Lines cannot cross or overlap each other, or loop back. Every circle your line runs through counts, so go round the ones you do not want.',
+      },
+      {
+        id: '4',
+        icon: '🏆',
+        title: 'Climb the Levels',
+        description: `Press Check when you are done. Finish a level to unlock the next. Stuck? Each level gives one Hint, for ${SCORE.HINT_COST} points.`,
       },
     ],
   },
 
   HOME: {
     GREETING: 'Ready to drive?',
-    SUBTITLE: 'Test what you know about trucks',
+    SUBTITLE: 'Test what you know about the dispatch flow',
     BEST_SCORE: 'Best Score',
-    QUESTIONS: 'Questions',
-    START_QUIZ: 'Start Quiz',
+    LEVELS: 'Levels',
+    PLAY: 'Play',
     HOW_TO_PLAY: 'How to play',
     RULES: [
-      'Find the boxes that belong to the flow and join them with your finger. Some boxes are extra.',
-      'Lines cannot cross or overlap. If they do, the flow resets.',
-      'Join the whole flow, then press Check. Wrong? Retry, but you lose points.',
+      'Read the question, then draw through the circles in order, starting with the first. Draw it all in one go, or one line at a time.',
+      'Lines cannot cross or overlap each other. Every circle your line runs through counts, so go round the extra ones.',
+      'Press Check when you are done. Wrong? Retry, but you lose points.',
+      `Stuck? You get one Hint per level. It costs ${SCORE.HINT_COST} points on that question.`,
     ],
+  },
+
+  LEVELS: {
+    TITLE: 'Choose a Level',
+    LEVEL: (number) => `Level ${number}`,
+    PROGRESS: (done, total) => `${done}/${total} done`,
+    LOCKED: (previous) => `Finish Level ${previous} to unlock`,
+    COMPLETED: (best, max) => `Completed · Best ${best}/${max}`,
   },
 
   QUIZ: {
     QUESTION_OF: (current, total) => `Question ${current}/${total}`,
+    LEVEL_LABEL: (number, name) => `LEVEL ${number} · ${name.toUpperCase()}`,
     SCORE: 'Score',
-    HINT: 'Find the boxes that belong to this flow and join them in order. Some boxes are extra. Lines cannot cross.',
-    LINKS: (drawn) => `Links drawn: ${drawn}`,
-    CHECK: 'Check Answer',
+    HINT: 'Draw through the circles in order, starting with the first. You can do it in one go. Lines cannot cross or overlap.',
     RESET: 'Reset',
     UNDO: 'Undo',
+    CHECK: 'Check Answer',
+    HINT_BUTTON: (cost) => `Hint −${cost}`,
+    HINT_USED: 'Hint used',
   },
 
   MODAL: {
     CORRECT_TITLE: 'Correct! 🎉',
-    CORRECT_MESSAGE: (points) => `Flow is right. You earned +${points} points.`,
+    CORRECT_MESSAGE: (points) => `Right path. You earned +${points} points.`,
     WRONG_TITLE: 'Not Quite ❌',
-    WRONG_MESSAGE: 'Some links are not right. Try again.',
+    WRONG_MESSAGE: 'That path is not right. Try again.',
     NEXT: 'Next Question',
-    FINISH: 'See Result',
+    FINISH: 'Finish Level',
     RETRY: 'Retry',
-    OVERLAP_TITLE: 'Lines Cannot Cross ⚠️',
+    OVERLAP_TITLE: 'Line Not Allowed ⚠️',
     OVERLAP_MESSAGE:
-      'Lines cannot cross or overlap each other, or run over a box. This flow is reset — draw it again.',
-    RESET_FLOW: 'Reset Flow',
+      'Lines cannot cross or overlap each other, or loop back through a circle. This question is reset — draw it again.',
+    RESET_FLOW: 'Reset Question',
+    HINT_TITLE: 'Hint',
+    HINT_BODY: 'Draw through these circles, in this order:',
+    HINT_COST: (cost) => `This hint costs ${cost} points.`,
+    HINT_OK: 'Got it',
   },
 
   RESULT: {
-    TITLE: 'Quiz Complete',
+    TITLE: (number) => `Level ${number} Complete`,
     YOUR_SCORE: 'Your Score',
     BEST_SCORE: 'Best Score',
     NEW_BEST: '🏆 New Best Score!',
-    PLAY_AGAIN: 'Play Again',
-    HOME: 'Home',
+    NEXT_LEVEL: 'Next Level',
+    REPLAY: 'Replay Level',
+    ALL_LEVELS: 'All Levels',
     MESSAGES: {
       GREAT: 'Excellent driver!',
       GOOD: 'Good job, keep practising.',
