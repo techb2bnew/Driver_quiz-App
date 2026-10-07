@@ -4,15 +4,15 @@ import { BaseStyle } from '../constant/Style';
 import { spacings } from '../constant/Fonts';
 import { fontSize, fontWeight } from '../utils/typography';
 import {
-  gameAccentColor,
   gameBubbleColors,
   gameCardColor,
   gameLoseColor,
   gameSlotBgColor,
   gameTextColor,
-  gameTileTextColor,
   gameWinColor,
-  authBorderColor,
+  gameAccentColor,
+  gameAccentWash,
+  gameArenaBorderColor,
 } from '../constant/Color';
 import { pointInRect, segmentHitsRect, segmentsCross } from '../utils/geometry';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from '../utils';
@@ -64,7 +64,7 @@ const Path = memo(({ points, color }) => (
 const clamp = (value, max) => Math.min(Math.max(value, 0), max);
 
 /**
- * chips: [{ id, label, type: 'actor' | 'action', x, y }] — x / y are the box
+ * chips: [{ id, label, x, y }] — x / y are the box
  * centre as a 0–1 fraction of the board, so boxes stay put on every screen.
  * lines: [{ a, b, points }] — drawn links (the finger's path), owned by the parent.
  * onChange(lines): called with the new list when a valid line is drawn.
@@ -278,7 +278,6 @@ const FlowBoard = ({ chips, lines, onChange, onViolation, status, isCorrectLink 
 
       {chips.map((chip) => {
         const r = rects[chip.id];
-        const isActor = chip.type === 'actor';
         const lit = degree(chip.id) > 0 || (drag && drag.from === chip.id);
         return (
           <View
@@ -288,14 +287,16 @@ const FlowBoard = ({ chips, lines, onChange, onViolation, status, isCorrectLink 
               BaseStyle.positionAbsolute,
               BaseStyle.alignJustifyCenter,
               { left: r.left, top: r.top },
-              isActor ? styles.actorChip : styles.actionChip,
               lit && styles.litChip,
             ]}>
+            {/* The tint is its own layer: the box itself stays opaque, so a line
+                running into it is hidden instead of showing through. */}
+            {lit && <View pointerEvents="none" style={styles.litWash} />}
             <Text
               numberOfLines={3}
               adjustsFontSizeToFit
               minimumFontScale={0.8}
-              style={[styles.label, isActor && styles.actorLabel]}>
+              style={styles.label}>
               {chip.label}
             </Text>
           </View>
@@ -318,7 +319,7 @@ const styles = StyleSheet.create({
     backgroundColor: gameCardColor,
     borderRadius: spacings.xxxxLarge,
     borderWidth: 1,
-    borderColor: authBorderColor,
+    borderColor: gameArenaBorderColor,
   },
   chip: {
     width: CHIP_WIDTH,
@@ -326,27 +327,23 @@ const styles = StyleSheet.create({
     borderRadius: spacings.large,
     borderWidth: 2,
     paddingHorizontal: spacings.normal,
-  },
-  actionChip: {
+    // Every box looks the same: nothing on screen says which ones belong together.
     backgroundColor: gameSlotBgColor,
-    borderColor: authBorderColor,
-  },
-  actorChip: {
-    backgroundColor: gameAccentColor,
-    borderColor: gameAccentColor,
+    borderColor: gameArenaBorderColor,
   },
   litChip: {
-    borderColor: gameTextColor,
+    borderColor: gameAccentColor,
+  },
+  litWash: {
+    ...StyleSheet.absoluteFillObject,
+    borderRadius: spacings.large,
+    backgroundColor: gameAccentWash,
   },
   label: {
     color: gameTextColor,
     fontSize: fontSize('fontSizeSmall'),
     fontWeight: fontWeight('fontWeightMedium'),
     textAlign: 'center',
-  },
-  actorLabel: {
-    color: gameTileTextColor,
-    fontWeight: fontWeight('fontWeightMedium1x'),
   },
 });
 

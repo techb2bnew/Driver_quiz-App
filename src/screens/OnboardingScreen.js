@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { Animated, FlatList, StyleSheet, Text, View, Pressable } from 'react-native';
+import { Animated, FlatList, StatusBar, StyleSheet, Text, View, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import AppButton from '../components/AppButton';
 import { BaseStyle } from '../constant/Style';
@@ -82,6 +82,7 @@ const OnboardingScreen = ({ navigate }) => {
 
   return (
     <SafeAreaView style={[BaseStyle.flex, styles.container]}>
+      <StatusBar barStyle="light-content" backgroundColor={gameBgColor} />
       <View style={[BaseStyle.alignItemsFlexEnd, styles.skipRow]}>
         {!isLast && (
           <Pressable onPress={finish} hitSlop={spacings.xxLarge}>

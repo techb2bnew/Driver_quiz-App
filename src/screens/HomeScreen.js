@@ -11,11 +11,12 @@ import { spacings } from '../constant/Fonts';
 import { fontSize, fontWeight, iconSize } from '../utils/typography';
 import {
   gameAccentColor,
+  gameAccentWash,
+  gameArenaBorderColor,
   gameBgColor,
   gameCardColor,
   gameMutedTextColor,
   gameTextColor,
-  authBorderColor,
 } from '../constant/Color';
 import { widthPercentageToDP as wp } from '../utils';
 
@@ -33,23 +34,28 @@ const HomeScreen = ({ navigate }) => {
     <SafeAreaView style={[BaseStyle.flex, styles.container]}>
       <StatusBar barStyle="light-content" backgroundColor={gameBgColor} />
       <View style={BaseStyle.flex}>
-        <FadeView>
-          <Text style={styles.logo}>🚛</Text>
-          <Text style={styles.greeting}>{STRINGS.HOME.GREETING}</Text>
-          <Text style={styles.subtitle}>{STRINGS.HOME.SUBTITLE}</Text>
-        </FadeView>
-
-        <FadeView delay={150} style={[BaseStyle.flexDirectionRow, styles.stats]}>
+        <FadeView delay={80} style={[BaseStyle.flexDirectionRow, styles.stats]}>
           <StatCard label={STRINGS.HOME.BEST_SCORE} value={bestScore} />
           <View style={{ width: spacings.large }} />
           <StatCard label={STRINGS.HOME.QUESTIONS} value={QUESTIONS.length} />
+        </FadeView>
+
+        <FadeView delay={180} style={BaseStyle.alignItemsCenter}>
+          <View style={[styles.logoRing, BaseStyle.alignJustifyCenter]}>
+            <Text style={styles.logo}>🚛</Text>
+          </View>
+          <Text style={styles.kicker}>{STRINGS.APP_NAME.toUpperCase()}</Text>
+          <Text style={styles.greeting}>{STRINGS.HOME.GREETING}</Text>
+          <Text style={styles.subtitle}>{STRINGS.HOME.SUBTITLE}</Text>
         </FadeView>
 
         <FadeView delay={300} style={[styles.rules, BaseStyle.borderRadius10]}>
           <Text style={styles.rulesTitle}>{STRINGS.HOME.HOW_TO_PLAY}</Text>
           {STRINGS.HOME.RULES.map((rule, i) => (
             <View key={rule} style={[BaseStyle.flexDirectionRow, styles.ruleRow]}>
-              <Text style={styles.ruleNumber}>{i + 1}</Text>
+              <View style={[styles.ruleBadge, BaseStyle.alignJustifyCenter]}>
+                <Text style={styles.ruleNumber}>{i + 1}</Text>
+              </View>
               <Text style={[styles.ruleText, BaseStyle.flex]}>{rule}</Text>
             </View>
           ))}
@@ -57,7 +63,11 @@ const HomeScreen = ({ navigate }) => {
       </View>
 
       <FadeView delay={450}>
-        <AppButton title={STRINGS.HOME.START_QUIZ} onPress={() => navigate(SCREENS.QUIZ, { runId: Date.now() })} />
+        <AppButton
+          title={STRINGS.HOME.START_QUIZ}
+          pulse
+          onPress={() => navigate(SCREENS.QUIZ, { runId: Date.now() })}
+        />
       </FadeView>
     </SafeAreaView>
   );
@@ -67,31 +77,47 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: gameBgColor,
     padding: spacings.xxxxLarge,
+    overflow: 'hidden',
+  },
+  logoRing: {
+    width: wp(28),
+    height: wp(28),
+    borderRadius: wp(14),
+    marginTop: spacings.xxLarge,
+    backgroundColor: gameCardColor,
+    borderWidth: 2,
+    borderColor: gameAccentColor,
   },
   logo: {
     fontSize: iconSize.medium,
+  },
+  kicker: {
+    color: gameAccentColor,
+    fontSize: fontSize('fontSizeSmall1x'),
+    fontWeight: fontWeight('fontWeightBold'),
+    letterSpacing: 3,
     marginTop: spacings.xxLarge,
   },
   greeting: {
     color: gameTextColor,
     fontSize: fontSize('fontSizeLarge2x'),
     fontWeight: fontWeight('fontWeightBold'),
-    marginTop: spacings.large,
+    marginTop: spacings.small,
+    textAlign: 'center',
   },
   subtitle: {
     color: gameMutedTextColor,
     fontSize: fontSize('fontSizeNormal2x'),
     marginTop: spacings.normal,
+    textAlign: 'center',
   },
   stats: {
-    marginTop: spacings.ExtraLarge,
+    marginTop: spacings.large,
   },
   stat: {
     backgroundColor: gameCardColor,
-    borderRadius: spacings.xxxxLarge,
-    borderWidth: 1,
-    borderColor: authBorderColor,
-    paddingVertical: spacings.xxxxLarge,
+    borderRadius: spacings.Large2x,
+    paddingVertical: spacings.xxLarge,
   },
   statValue: {
     color: gameAccentColor,
@@ -100,15 +126,19 @@ const styles = StyleSheet.create({
   },
   statLabel: {
     color: gameMutedTextColor,
-    fontSize: fontSize('fontSizeNormal'),
-    marginTop: spacings.normal,
+    fontSize: fontSize('fontSizeSmall1x'),
+    fontWeight: fontWeight('fontWeightBold'),
+    letterSpacing: 0.8,
+    textTransform: 'uppercase',
+    marginTop: spacings.small,
   },
   rules: {
     marginTop: spacings.xxxxLarge,
     backgroundColor: gameCardColor,
     padding: spacings.xxLarge,
+    borderRadius: spacings.xxxxLarge,
     borderWidth: 1,
-    borderColor: authBorderColor,
+    borderColor: gameArenaBorderColor,
   },
   rulesTitle: {
     color: gameTextColor,
@@ -117,13 +147,22 @@ const styles = StyleSheet.create({
     marginBottom: spacings.large,
   },
   ruleRow: {
-    marginBottom: spacings.small,
+    marginBottom: spacings.large,
+    alignItems: 'center',
+  },
+  ruleBadge: {
+    width: wp(7),
+    height: wp(7),
+    borderRadius: wp(3.5),
+    marginRight: spacings.large,
+    backgroundColor: gameAccentWash,
+    borderWidth: 1,
+    borderColor: gameAccentColor,
   },
   ruleNumber: {
-    width: wp(6),
     color: gameAccentColor,
-    fontSize: fontSize('fontSizeNormal'),
-    fontWeight: fontWeight('fontWeightMedium1x'),
+    fontSize: fontSize('fontSizeSmall1x'),
+    fontWeight: fontWeight('fontWeightBold'),
   },
   ruleText: {
     color: gameMutedTextColor,

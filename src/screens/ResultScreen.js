@@ -15,7 +15,8 @@ import {
   gameCardColor,
   gameMutedTextColor,
   gameTextColor,
-  authBorderColor,
+  gameTileTextColor,
+  gameArenaBorderColor,
 } from '../constant/Color';
 import { widthPercentageToDP as wp } from '../utils';
 
@@ -71,7 +72,7 @@ const ResultScreen = ({ navigate, score }) => {
           <Text style={styles.newBestText}>{STRINGS.RESULT.NEW_BEST}</Text>
         </Animated.View>
 
-        <FadeView delay={400} style={BaseStyle.alignItemsCenter}>
+        <FadeView delay={400} style={[styles.messageCard, BaseStyle.alignItemsCenter]}>
           <Text style={styles.message}>{message}</Text>
           <Text style={styles.best}>
             {STRINGS.RESULT.BEST_SCORE}: <Text style={styles.bestValue}>{isNewBest ? score : bestScore}</Text>
@@ -131,29 +132,36 @@ const styles = StyleSheet.create({
     marginTop: spacings.xxxxLarge,
     paddingVertical: spacings.large,
     paddingHorizontal: spacings.xxxxLarge,
-    backgroundColor: gameCardColor,
-    borderWidth: 1,
-    borderColor: gameAccentColor,
+    backgroundColor: gameAccentColor,
   },
   newBestText: {
-    color: gameAccentColor,
+    color: gameTileTextColor,
     fontSize: fontSize('fontSizeNormal'),
     fontWeight: fontWeight('fontWeightMedium1x'),
+  },
+  messageCard: {
+    marginTop: spacings.xxxxLarge,
+    width: '100%',
+    backgroundColor: gameCardColor,
+    borderRadius: spacings.xxxxLarge,
+    borderWidth: 1,
+    borderColor: gameArenaBorderColor,
+    paddingVertical: spacings.xxLarge,
+    paddingHorizontal: spacings.xxxxLarge,
   },
   message: {
     color: gameTextColor,
     fontSize: fontSize('fontSizeMedium1x'),
     fontWeight: fontWeight('fontWeightMedium'),
-    marginTop: spacings.xxxxLarge,
+    textAlign: 'center',
   },
   best: {
     color: gameMutedTextColor,
     fontSize: fontSize('fontSizeNormal2x'),
     marginTop: spacings.small,
-    borderColor: authBorderColor,
   },
   bestValue: {
-    color: gameTextColor,
+    color: gameAccentColor,
     fontWeight: fontWeight('fontWeightMedium1x'),
   },
   homeButton: {

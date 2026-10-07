@@ -18,10 +18,14 @@ import {
   gameCardColor,
   gameMutedTextColor,
   gameTextColor,
-  authBorderColor,
+  gameAccentWash,
+  gameArenaBorderColor,
 } from '../constant/Color';
 
 const TOTAL = QUESTIONS.length;
+
+// Each question has several ready-made box layouts; show a different one each time.
+const pickLayout = (question) => Math.floor(Math.random() * question.layouts.length);
 
 // A link is the same whichever box you started from.
 const linkKey = (a, b) => [a, b].sort().join('|');
@@ -30,7 +34,8 @@ const QuizScreen = ({ onFinish, onExit }) => {
   const [index, setIndex] = useState(0);
   const [score, setScore] = useState(0);
   const [attempts, setAttempts] = useState(0); // wrong tries on this question
-  const [lines, setLines] = useState([]); // [{ a, b }]
+  const [layoutIndex, setLayoutIndex] = useState(() => pickLayout(QUESTIONS[0]));
+  const [lines, setLines] = useState([]); // [{ a, b, points }]
   const [status, setStatus] = useState(null); // null | 'checked' | 'violation'
   const [modal, setModal] = useState({ visible: false, type: 'correct', points: 0 });
   const timer = useRef(null);
@@ -52,6 +57,14 @@ const QuizScreen = ({ onFinish, onExit }) => {
   const question = QUESTIONS[index];
   const isLast = index === TOTAL - 1;
   const required = question.links.length;
+  const chips = useMemo(
+    () =>
+      question.chips.map((chip) => {
+        const [x, y] = question.layouts[layoutIndex][chip.id];
+        return { ...chip, x, y };
+      }),
+    [question, layoutIndex],
+  );
   const correctKeys = useMemo(
     () => new Set(question.links.map(([a, b]) => linkKey(a, b))),
     [question],
@@ -100,6 +113,7 @@ const QuizScreen = ({ onFinish, onExit }) => {
     } else {
       resetBoard();
       setAttempts(0);
+      setLayoutIndex(pickLayout(QUESTIONS[index + 1]));
       setIndex((i) => i + 1);
     }
   };
@@ -113,12 +127,15 @@ const QuizScreen = ({ onFinish, onExit }) => {
         {/* key remounts the block per question so the entrance animation replays. */}
         <FadeView key={question.id} style={BaseStyle.alignItemsCenter}>
           <View style={[styles.questionCard, BaseStyle.width100Percent]}>
+            <View style={styles.accentBar} />
             <Text style={styles.question}>{question.title}</Text>
             <Text style={styles.hint}>{STRINGS.QUIZ.HINT}</Text>
-            <Text style={styles.links}>{STRINGS.QUIZ.LINKS(lines.length, required)}</Text>
+            <View style={styles.linkPill}>
+              <Text style={styles.links}>{STRINGS.QUIZ.LINKS(lines.length)}</Text>
+            </View>
           </View>
           <FlowBoard
-            chips={question.chips}
+            chips={chips}
             lines={lines}
             onChange={setLines}
             onViolation={onViolation}
@@ -146,7 +163,7 @@ const QuizScreen = ({ onFinish, onExit }) => {
         <AppButton
           title={STRINGS.QUIZ.CHECK}
           onPress={onCheck}
-          disabled={lines.length !== required || status !== null}
+          disabled={lines.length === 0 || status !== null}
           style={styles.checkButton}
         />
       </View>
@@ -165,6 +182,7 @@ const QuizScreen = ({ onFinish, onExit }) => {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: gameBgColor,
+    overflow: 'hidden',
     paddingHorizontal: spacings.xxxxLarge,
     paddingTop: spacings.xxxxLarge,
   },
@@ -172,9 +190,18 @@ const styles = StyleSheet.create({
     backgroundColor: gameCardColor,
     borderRadius: spacings.xxxxLarge,
     borderWidth: 1,
-    borderColor: authBorderColor,
+    borderColor: gameArenaBorderColor,
     padding: spacings.xxLarge,
-    marginVertical: spacings.xxxxLarge,
+    marginVertical: spacings.large,
+    overflow: 'hidden',
+  },
+  accentBar: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: 3,
+    backgroundColor: gameAccentColor,
   },
   question: {
     color: gameTextColor,
@@ -200,12 +227,19 @@ const styles = StyleSheet.create({
     width: 'auto',
     flex: 1.6,
   },
+  linkPill: {
+    alignSelf: 'center',
+    marginTop: spacings.large,
+    paddingVertical: spacings.small,
+    paddingHorizontal: spacings.xxLarge,
+    borderRadius: spacings.Large2x,
+    backgroundColor: gameAccentWash,
+  },
   links: {
     color: gameAccentColor,
     fontSize: fontSize('fontSizeSmall1x'),
-    fontWeight: fontWeight('fontWeightMedium1x'),
+    fontWeight: fontWeight('fontWeightBold'),
     textAlign: 'center',
-    marginTop: spacings.small,
   },
 });
 

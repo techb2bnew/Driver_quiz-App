@@ -66,17 +66,17 @@ export const STRINGS = {
     START_QUIZ: 'Start Quiz',
     HOW_TO_PLAY: 'How to play',
     RULES: [
-      'Draw a line with your finger from one box to the next.',
+      'Find the boxes that belong to the flow and join them with your finger. Some boxes are extra.',
       'Lines cannot cross or overlap. If they do, the flow resets.',
-      'Join every link, then press Check. Wrong? Retry, but you lose points.',
+      'Join the whole flow, then press Check. Wrong? Retry, but you lose points.',
     ],
   },
 
   QUIZ: {
     QUESTION_OF: (current, total) => `Question ${current}/${total}`,
     SCORE: 'Score',
-    HINT: 'Draw a line with your finger from one box to the next. Lines cannot cross.',
-    LINKS: (done, total) => `Links ${done}/${total}`,
+    HINT: 'Find the boxes that belong to this flow and join them in order. Some boxes are extra. Lines cannot cross.',
+    LINKS: (drawn) => `Links drawn: ${drawn}`,
     CHECK: 'Check Answer',
     RESET: 'Reset',
     UNDO: 'Undo',

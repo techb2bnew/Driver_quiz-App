@@ -7,9 +7,10 @@ import { fontSize, fontWeight } from '../utils/typography';
 import {
   gameAccentColor,
   gameBadgeBgColor,
-  gameMutedTextColor,
   gameProgressTrackColor,
   gameTextColor,
+  gameTileTextColor,
+  gameAccentLine,
 } from '../constant/Color';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from '../utils';
 
@@ -57,6 +58,8 @@ const styles = StyleSheet.create({
     width: wp(10),
     height: wp(10),
     backgroundColor: gameBadgeBgColor,
+    borderWidth: 1,
+    borderColor: gameAccentLine,
   },
   backText: {
     color: gameTextColor,
@@ -72,14 +75,15 @@ const styles = StyleSheet.create({
     minWidth: wp(16),
     paddingVertical: spacings.normal,
     paddingHorizontal: spacings.xxLarge,
-    backgroundColor: gameBadgeBgColor,
+    backgroundColor: gameAccentColor,
   },
   scoreLabel: {
-    color: gameMutedTextColor,
+    color: gameTileTextColor,
     fontSize: fontSize('fontSizeExtraSmall'),
+    fontWeight: fontWeight('fontWeightBold'),
   },
   scoreValue: {
-    color: gameAccentColor,
+    color: gameTileTextColor,
     fontSize: fontSize('fontSizeNormal'),
     fontWeight: fontWeight('fontWeightBold'),
   },

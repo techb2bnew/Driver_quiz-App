@@ -143,26 +143,27 @@ export const scrim = 'rgba(15,20,30,0.45)';
 // ---------------------------------------------------------------------------
 // Word game
 // ---------------------------------------------------------------------------
-// Dark ground, white letter tiles, one gold accent. Built from the tokens
-// above so the game follows any theme change made there.
-export const gameBgColor = splashBgColor;
-export const gameCardColor = authCardBg;
-export const gameSlotBgColor = authInputBg;
+// One dark navy ground, warm type, one gold accent. Cards sit a step above
+// the page so the board reads clearly and the words stay light on dark.
+export const gameBgColor = '#152033';
+export const gameCardColor = '#1E2C42';
+export const gameSlotBgColor = '#28364E';
 export const gameTileBgColor = whiteColor;
-export const gameTileTextColor = darkgrayColor;
-export const gameAccentColor = goldColor;
-export const gameTextColor = whiteColor;
-export const gameMutedTextColor = authMutedColor;
-export const gameWinColor = okColor;
-export const gameLoseColor = primaryRedColor;
-export const gameDotInactiveColor = authBorderColor;
-export const gameScrimColor = blackOpacity7;
+export const gameTileTextColor = '#1A1408';
+export const gameAccentColor = '#F0B429';
+export const gameTextColor = '#F4F1E8';
+export const gameMutedTextColor = '#A8B3C4';
+export const gameWinColor = '#3CBF86';
+export const gameLoseColor = '#E15D5D';
+export const gameDotInactiveColor = 'rgba(255,255,255,0.22)';
+export const gameScrimColor = 'rgba(8, 12, 20, 0.72)';
+export const gameAccentWash = 'rgba(240,180,41,0.16)';
+export const gameAccentLine = 'rgba(240,180,41,0.4)';
 
-// Floating letters. Light fills so the dark letter stays readable on each;
-// a tile takes the colour at its index, cycling.
-export const gameArenaBgColor = authStatCardBg;
-export const gameArenaBorderColor = authBorderColor;
-export const gameBadgeBgColor = authInputBg;
+// Drawn lines. Saturated enough to read on the dark board.
+export const gameArenaBgColor = 'rgba(255,255,255,0.04)';
+export const gameArenaBorderColor = 'rgba(240,180,41,0.22)';
+export const gameBadgeBgColor = '#28364E';
 export const gameBubbleColors = [
   goldColor,
   lightGreenColor,
@@ -180,4 +181,4 @@ export const gameTileFaceColor = goldColor;
 export const gameTileEdgeColor = dutyOnDutyColor;
 export const gameWinEdgeColor = dutyDrivingColor;
 export const gameLoseEdgeColor = dangerColor;
-export const gameProgressTrackColor = authBorderColor;
+export const gameProgressTrackColor = 'rgba(255,255,255,0.12)';
