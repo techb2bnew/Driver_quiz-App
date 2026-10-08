@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { Animated, StatusBar, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import AppButton from '../components/AppButton';
+import Confetti from '../components/Confetti';
 import FadeView from '../components/FadeView';
 import useProgress from '../hooks/useProgress';
 import { BaseStyle } from '../constant/Style';
@@ -109,6 +110,9 @@ const ResultScreen = ({ navigate, levelId, score, isNewBest }) => {
           style={styles.homeButton}
         />
       </FadeView>
+
+      {/* A level was just finished: celebrate. */}
+      <Confetti />
     </SafeAreaView>
   );
 };

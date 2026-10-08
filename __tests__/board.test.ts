@@ -20,14 +20,21 @@ const seeded = (seed: number) => () => {
 const SCREENS = [[320, 568], [360, 780], [412, 915], [768, 1024]];
 
 describe('questions', () => {
-  test('four levels of three questions, ids unique, paths start and end on different circles', () => {
-    expect(LEVELS).toHaveLength(4);
-    LEVELS.forEach((level) => expect(level.questions).toHaveLength(3));
-    expect(new Set(ALL_QUESTIONS.map((q) => q.id)).size).toBe(12);
+  test('five levels of four questions, unique ids, three-circle paths', () => {
+    expect(LEVELS).toHaveLength(5);
+    LEVELS.forEach((level) => expect(level.questions).toHaveLength(4));
+    expect(new Set(ALL_QUESTIONS.map((q) => q.id)).size).toBe(20);
     ALL_QUESTIONS.forEach((q) => {
       expect(q.path.length).toBeGreaterThanOrEqual(3);
       expect(q.path.length).toBeLessThanOrEqual(6);
+      expect(new Set(q.path).size).toBe(q.path.length); // no label twice in one path
     });
+  });
+
+  test('every question in the notebook is there, and the dropped ones are not', () => {
+    const ids = ALL_QUESTIONS.map((q) => q.id).sort();
+    const wanted = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 15, 16, 17, 18, 19, 20, 21].map((n) => `nb${n}`);
+    expect(ids).toEqual([...wanted].sort());
   });
 
   test('levels get longer: every later level has paths at least as long as the one before', () => {
@@ -76,23 +83,28 @@ describe('questions', () => {
 
 describe('levels', () => {
   const [l1, l2] = LEVELS;
+  const all = (level: any, points = 10) => Object.fromEntries(level.questions.map((q: any) => [q.id, points]));
+
   test('level 2 opens only after every question of level 1 is done', () => {
     expect(isLevelUnlocked(LEVELS, 0, {})).toBe(true);
     expect(isLevelUnlocked(LEVELS, 1, {})).toBe(false);
-    const two = { l1q1: 10, l1q2: 8 };
-    expect(isLevelUnlocked(LEVELS, 1, two)).toBe(false);
-    const three = { ...two, l1q3: 7 };
-    expect(isLevelComplete(l1, three)).toBe(true);
-    expect(isLevelUnlocked(LEVELS, 1, three)).toBe(true);
-    expect(isLevelUnlocked(LEVELS, 2, three)).toBe(false);
-    expect(completedLevels(LEVELS, three)).toBe(1);
+    const [a, b, c] = l1.questions;
+    const partly = { [a.id]: 10, [b.id]: 8, [c.id]: 7 };
+    expect(isLevelUnlocked(LEVELS, 1, partly)).toBe(false);   // one still to go
+    const done = all(l1);
+    expect(isLevelComplete(l1, done)).toBe(true);
+    expect(isLevelUnlocked(LEVELS, 1, done)).toBe(true);
+    expect(isLevelUnlocked(LEVELS, 2, done)).toBe(false);
+    expect(completedLevels(LEVELS, done)).toBe(1);
   });
 
   test('resume point and score', () => {
+    const [a, b] = l1.questions;
     expect(firstUnfinished(l1, {})).toBe(0);
-    expect(firstUnfinished(l1, { l1q1: 10 })).toBe(1);
-    expect(firstUnfinished(l1, { l1q1: 10, l1q2: 8 })).toBe(2);
-    expect(firstUnfinished(l2, { l1q1: 10 })).toBe(0); // other levels don't count
-    expect(levelScore(l1, { l1q1: 10, l1q2: 8, l2q1: 5 })).toBe(18);
+    expect(firstUnfinished(l1, { [a.id]: 10 })).toBe(1);
+    expect(firstUnfinished(l1, { [a.id]: 10, [b.id]: 8 })).toBe(2);
+    expect(firstUnfinished(l2, { [a.id]: 10 })).toBe(0); // other levels don't count
+    expect(levelScore(l1, { [a.id]: 10, [b.id]: 8, [l2.questions[0].id]: 5 })).toBe(18);
+    expect(levelScore(l1, all(l1), true)).toBe(37);       // 4 x 10, less the hint
   });
 });

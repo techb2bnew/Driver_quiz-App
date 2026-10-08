@@ -1,5 +1,5 @@
 import React from 'react';
-import { Pressable, StatusBar, StyleSheet, Text, View } from 'react-native';
+import { Pressable, ScrollView, StatusBar, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import FadeView from '../components/FadeView';
 import useProgress from '../hooks/useProgress';
@@ -94,7 +94,10 @@ const LevelsScreen = ({ navigate }) => {
         <View style={styles.spacer} />
       </View>
 
-      <View style={styles.list}>
+      <ScrollView
+        style={styles.list}
+        contentContainerStyle={styles.listContent}
+        showsVerticalScrollIndicator={false}>
         {LEVELS.map((level, i) => (
           <FadeView key={level.id} delay={80 + i * 90}>
             <LevelCard
@@ -107,7 +110,7 @@ const LevelsScreen = ({ navigate }) => {
             />
           </FadeView>
         ))}
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -141,6 +144,9 @@ const styles = StyleSheet.create({
   },
   list: {
     marginTop: spacings.ExtraLarge,
+  },
+  listContent: {
+    paddingBottom: spacings.ExtraLarge,
   },
   card: {
     backgroundColor: gameCardColor,
