@@ -18,7 +18,7 @@ export const SCORE = {
   // Every wrong attempt on a question takes this much off the next try.
   PENALTY_PER_RETRY: 2,
   MIN_POINTS: 2,
-  // A level gives one hint; using it costs this much of that question's points.
+  // A level gives one hint; using it takes this much off the score straight away.
   HINT_COST: 3,
 };
 
@@ -63,7 +63,7 @@ export const STRINGS = {
         id: '4',
         icon: '🏆',
         title: 'Climb the Levels',
-        description: `Press Check when you are done. Finish a level to unlock the next. Stuck? Each level gives one Hint, for ${SCORE.HINT_COST} points.`,
+        description: `Press Check when you are done. Finish a level to unlock the next. Stuck? Each level gives one Hint, which takes ${SCORE.HINT_COST} points off your score.`,
       },
     ],
   },
@@ -79,7 +79,7 @@ export const STRINGS = {
       'Read the question, then draw through the circles in order, starting with the first. Draw it all in one go, or one line at a time.',
       'Lines cannot cross or overlap each other. Every circle your line runs through counts, so go round the extra ones.',
       'Press Check when you are done. Wrong? Retry, but you lose points.',
-      `Stuck? You get one Hint per level. It costs ${SCORE.HINT_COST} points on that question.`,
+      `Stuck? You get one Hint per level. It takes ${SCORE.HINT_COST} points off your score.`,
     ],
   },
 
@@ -117,7 +117,7 @@ export const STRINGS = {
     RESET_FLOW: 'Reset Question',
     HINT_TITLE: 'Hint',
     HINT_BODY: 'Draw through these circles, in this order:',
-    HINT_COST: (cost) => `This hint costs ${cost} points.`,
+    HINT_COST: (cost) => `${cost} points are taken off your score.`,
     HINT_OK: 'Got it',
   },
 

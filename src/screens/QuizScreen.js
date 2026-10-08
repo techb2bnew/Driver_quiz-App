@@ -50,10 +50,8 @@ const QuizScreen = ({ levelId, done, hintUsed: hintSpent, onFinish, onExit }) =>
   const [chain, setChain] = useState([]); // circle ids joined so far, in order
   const [boardKey, setBoardKey] = useState(0);
   const [attempts, setAttempts] = useState(0); // wrong tries on this question
-  // One hint per level: `hintSpent` stays true for the rest of the level, while
-  // `hintHere` only marks the question it was used on (that question pays for it).
+  // One hint per level. Using it takes its cost off the score straight away.
   const [levelHintUsed, setLevelHintUsed] = useState(!!hintSpent);
-  const [hintHere, setHintHere] = useState(false);
   const [hintOpen, setHintOpen] = useState(false);
   const [status, setStatus] = useState(null); // null | 'correct' | 'wrong' | 'violation'
   const [modal, setModal] = useState({ visible: false, type: 'correct', points: 0 });
@@ -63,7 +61,7 @@ const QuizScreen = ({ levelId, done, hintUsed: hintSpent, onFinish, onExit }) =>
 
   const question = questions[index];
   const isLast = index === questions.length - 1;
-  const score = levelScore(level, earned);
+  const score = levelScore(level, earned, levelHintUsed);
 
   const showModal = (type, points, delay) => {
     timer.current = setTimeout(() => setModal({ visible: true, type, points }), delay);
@@ -75,9 +73,7 @@ const QuizScreen = ({ levelId, done, hintUsed: hintSpent, onFinish, onExit }) =>
       labels.length === question.path.length && labels.every((l, i) => l === question.path[i]);
     const points = Math.max(
       SCORE.MIN_POINTS,
-      SCORE.POINTS_PER_QUESTION -
-        attempts * SCORE.PENALTY_PER_RETRY -
-        (hintHere ? SCORE.HINT_COST : 0),
+      SCORE.POINTS_PER_QUESTION - attempts * SCORE.PENALTY_PER_RETRY,
     );
     setStatus(correct ? 'correct' : 'wrong');
     if (correct) {
@@ -104,7 +100,6 @@ const QuizScreen = ({ levelId, done, hintUsed: hintSpent, onFinish, onExit }) =>
 
   const onHint = () => {
     setLevelHintUsed(true);
-    setHintHere(true);
     setHintOpen(true);
     markHintUsed(level.id);
   };
@@ -120,7 +115,6 @@ const QuizScreen = ({ levelId, done, hintUsed: hintSpent, onFinish, onExit }) =>
       setNodes(arrange(questions[index + 1]));
       setChain([]);
       setAttempts(0);
-      setHintHere(false);
       setStatus(null);
       setBoardKey((k) => k + 1);
       setIndex(index + 1);

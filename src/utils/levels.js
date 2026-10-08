@@ -8,8 +8,10 @@ export const doneCount = (level, done) => level.questions.filter((q) => q.id in 
 
 export const isLevelComplete = (level, done) => doneCount(level, done) === level.questions.length;
 
-export const levelScore = (level, done) =>
-  level.questions.reduce((sum, q) => sum + (done[q.id] || 0), 0);
+// The points earned on the level's questions, less the hint cost if the hint was used.
+// (The hint's cost is taken off the score the moment it is used, not off one question.)
+export const levelScore = (level, done, hintUsed = false) =>
+  level.questions.reduce((sum, q) => sum + (done[q.id] || 0), 0) - (hintUsed ? SCORE.HINT_COST : 0);
 
 // Level 1 is always open; every other level opens when the one before it is complete.
 export const isLevelUnlocked = (levels, index, done) =>

@@ -111,19 +111,22 @@ test('a level left half-way resumes at its first unfinished question with its sc
   expect(t).toContain(LEVELS[1].questions[2].title);
 });
 
-test('a level has one hint: it costs 3 points, stays spent on the next question, and is remembered', async () => {
+test('a level has one hint: it takes 3 points off the score at once, stays spent, and is remembered', async () => {
   await reset();
   let r: any;
   await act(async () => { r = ReactTestRenderer.create(<QuizScreen levelId={4} done={{}} onFinish={() => {}} onExit={() => {}} />); });
   const hintBtn = () => r.root.findAllByType(AppButton).find((b: any) => /^Hint/.test(b.props.title));
   expect(hintBtn().props.title).toBe('Hint −3');
+  expect(texts(r)).toContain('0');                                // score before the hint
   await act(async () => { hintBtn().props.onPress(); });
+  expect(texts(r)).toContain('-3');                               // 3 off straight away
   expect(hintBtn().props.title).toBe('Hint used');
   expect(hintBtn().props.disabled).toBe(true);
   const labels = texts(r);
   ['Broker', 'RC', 'Dispatcher', 'Driver'].forEach((w) => expect(labels).toContain(w));
   await answer(r, true, 5);
-  expect(r.root.findByType(ResultModal).props.points).toBe(7);   // 10 - 3 for the hint
+  expect(r.root.findByType(ResultModal).props.points).toBe(10);  // the question itself still pays in full
+  expect(texts(r)).toContain('7');                                // 10 earned, 3 already taken
   await pressModal(r);
   // next question of the same level: no second hint, and no further cost
   expect(texts(r)).toContain('Question 2/3');
