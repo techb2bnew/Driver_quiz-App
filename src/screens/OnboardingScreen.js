@@ -1,7 +1,8 @@
 import React, { useRef, useState } from 'react';
-import { Animated, FlatList, StatusBar, StyleSheet, Text, View, Pressable } from 'react-native';
+import { Animated, StatusBar, StyleSheet, Text, View, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import AppButton from '../components/AppButton';
+import PrivacyLink from '../components/PrivacyLink';
 import { BaseStyle } from '../constant/Style';
 import { SCREENS, STORAGE_KEYS, STRINGS } from '../constant/Constants';
 import { spacings } from '../constant/Fonts';
@@ -9,7 +10,6 @@ import { fontSize, fontWeight, iconSize } from '../utils/typography';
 import {
   gameAccentColor,
   gameBgColor,
-  gameDotInactiveColor,
   gameMutedTextColor,
   gameCardColor,
   gameTextColor,
@@ -121,6 +121,12 @@ const OnboardingScreen = ({ navigate }) => {
           title={isLast ? STRINGS.ONBOARDING.GET_STARTED : STRINGS.ONBOARDING.NEXT}
           onPress={onNext}
         />
+        {/* Always laid out, only visible on the last slide, so the footer doesn't jump. */}
+        <PrivacyLink
+          prefix={STRINGS.PRIVACY.ONBOARDING_PREFIX}
+          style={isLast ? undefined : styles.hidden}
+          pointerEvents={isLast ? 'auto' : 'none'}
+        />
       </View>
     </SafeAreaView>
   );
@@ -168,6 +174,9 @@ const styles = StyleSheet.create({
     fontSize: fontSize('fontSizeNormal2x'),
     textAlign: 'center',
     lineHeight: fontSize('fontSizeNormal2x') * 1.5,
+  },
+  hidden: {
+    opacity: 0,
   },
   footer: {
     paddingHorizontal: spacings.xxxxLarge,

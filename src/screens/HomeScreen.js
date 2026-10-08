@@ -3,6 +3,7 @@ import { StatusBar, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import AppButton from '../components/AppButton';
 import FadeView from '../components/FadeView';
+import PrivacyLink from '../components/PrivacyLink';
 import useProgress from '../hooks/useProgress';
 import { BaseStyle } from '../constant/Style';
 import { SCREENS, STRINGS } from '../constant/Constants';
@@ -68,6 +69,7 @@ const HomeScreen = ({ navigate }) => {
 
       <FadeView delay={450}>
         <AppButton title={STRINGS.HOME.PLAY} pulse onPress={() => navigate(SCREENS.LEVELS)} />
+        <PrivacyLink />
       </FadeView>
     </SafeAreaView>
   );

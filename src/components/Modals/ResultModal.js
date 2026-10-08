@@ -7,7 +7,6 @@ import { spacings } from '../../constant/Fonts';
 import { fontSize, fontWeight, iconSize } from '../../utils/typography';
 import {
   gameCardColor,
-  gameTextColor,
   gameMutedTextColor,
   gameScrimColor,
   gameWinColor,

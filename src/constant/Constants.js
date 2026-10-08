@@ -7,6 +7,9 @@ export const SCREENS = {
   RESULT: 'Result',
 };
 
+// The policy page the App links to (Home screen and the last onboarding slide).
+export const PRIVACY_URL = 'https://samsara.b2bcampus.com/privacy/drivequiz';
+
 export const STORAGE_KEYS = {
   ONBOARDING_DONE: '@drivequiz/onboardingDone',
   BEST_SCORE: '@drivequiz/bestScore',
@@ -32,6 +35,11 @@ export const TIMING = {
 export const STRINGS = {
   APP_NAME: 'DriveQuiz',
   TAGLINE: 'Learn the dispatch flow. Drive with confidence.',
+
+  PRIVACY: {
+    LINK: 'Privacy Policy',
+    ONBOARDING_PREFIX: 'By continuing, you agree to our',
+  },
 
   ONBOARDING: {
     SKIP: 'Skip',
